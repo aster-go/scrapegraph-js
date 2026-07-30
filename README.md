@@ -155,8 +155,14 @@ const res = await sgai.search({
   timeRange: "past_week",          // optional
   locationGeoCode: "us",           // optional
   fetchConfig: { /* ... */ },      // optional
+  allowedTypes: ["text/html", "application/pdf"], // optional MIME allowlist
 });
 ```
+
+By default `search` accepts every supported content type, including PDFs, and processes up to 25
+pages per PDF. You do not need to send `processors` or `maxPages` for this default. Use
+`allowedTypes` to restrict accepted MIME types. Only configure `processors` to override the cap;
+`{ type: "pdf" }` also defaults to 25, while `maxPages` accepts `1`–`500`, or `-1` for no page limit.
 
 ### crawl
 

@@ -10,6 +10,10 @@ export const htmlModeSchema = z.enum(["normal", "reader", "prune"]);
 export const fetchContentTypeSchema = z.enum([
 	"text/html",
 	"application/json",
+	"text/markdown",
+	"text/plain",
+	"text/csv",
+	"application/x-latex",
 	"application/pdf",
 	"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 	"application/vnd.openxmlformats-officedocument.presentationml.presentation",
@@ -25,10 +29,27 @@ export const fetchContentTypeSchema = z.enum([
 	"application/epub+zip",
 	"application/rtf",
 	"application/vnd.oasis.opendocument.text",
-	"text/csv",
-	"text/plain",
-	"application/x-latex",
 ]);
+export const pdfProcessorSchema = z.object({
+	type: z.literal("pdf"),
+	maxPages: z.union([z.literal(-1), z.number().int().min(1).max(500)]).default(25),
+});
+export const allowedTypesSchema = z
+	.array(fetchContentTypeSchema)
+	.min(1)
+	.refine((types) => new Set(types).size === types.length, {
+		message: "duplicate allowed types not allowed",
+	});
+export const processorsSchema = z
+	.array(pdfProcessorSchema)
+	.min(1)
+	.refine(
+		(processors) =>
+			new Set(processors.map((processor) => processor.type)).size === processors.length,
+		{
+			message: "duplicate processor types not allowed",
+		},
+	);
 export const userPromptSchema = z.string().min(1).max(10_000);
 
 const PUBLIC_DOMAIN_RE =
@@ -214,6 +235,8 @@ export const scrapeFormatEntrySchema = z.discriminatedUnion("type", [
 export const scrapeRequestSchema = z.object({
 	url: urlSchema,
 	contentType: fetchContentTypeSchema.optional(),
+	allowedTypes: allowedTypesSchema.optional(),
+	processors: processorsSchema.optional(),
 	fetchConfig: fetchConfigSchema.optional(),
 	formats: z
 		.array(scrapeFormatEntrySchema)
@@ -233,6 +256,8 @@ export const extractRequestBaseSchema = z
 		prompt: userPromptSchema,
 		schema: z.record(z.string(), z.unknown()).optional(),
 		contentType: fetchContentTypeSchema.optional(),
+		allowedTypes: allowedTypesSchema.optional(),
+		processors: processorsSchema.optional(),
 		fetchConfig: fetchConfigSchema.optional(),
 	})
 	.refine((d) => d.url || d.html || d.markdown, {
@@ -249,6 +274,8 @@ export const searchRequestSchema = z
 		prompt: userPromptSchema.optional(),
 		schema: z.record(z.string(), z.unknown()).optional(),
 		locationGeoCode: z.string().max(10).optional(),
+		allowedTypes: allowedTypesSchema.optional(),
+		processors: processorsSchema.optional(),
 		timeRange: z
 			.enum(["past_hour", "past_24_hours", "past_week", "past_month", "past_year"])
 			.optional(),
@@ -517,7 +544,8 @@ export const crawlRequestSchema = z.object({
 		.describe(
 			'Glob-style URL patterns to exclude. Use "*/<slug>" for first-level paths and "**/<slug>/**" for nested paths.',
 		),
-	contentTypes: z.array(fetchContentTypeSchema).optional(),
+	allowedTypes: allowedTypesSchema.optional(),
+	processors: processorsSchema.optional(),
 	fetchConfig: fetchConfigSchema.optional(),
 });
 

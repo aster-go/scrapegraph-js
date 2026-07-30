@@ -134,7 +134,7 @@ export type HealthResponse = z.infer<typeof healthResponseSchema>;
 
 // ─── scrape ──────────────────────────────────────────────────────────────────
 
-export type ScrapeRequest = z.infer<typeof scrapeRequestSchema>;
+export type ScrapeRequest = z.input<typeof scrapeRequestSchema>;
 export type FetchConfig = z.infer<typeof fetchConfigSchema>;
 export type FetchMode = z.infer<typeof fetchModeSchema>;
 export type FetchContentType = z.infer<typeof fetchContentTypeSchema>;
@@ -202,7 +202,7 @@ export type ScrapeEvent =
 
 // ─── extract ─────────────────────────────────────────────────────────────────
 
-export type ExtractRequestBase = z.infer<typeof extractRequestBaseSchema>;
+export type ExtractRequestBase = z.input<typeof extractRequestBaseSchema>;
 export type LlmConfig = z.infer<typeof llmConfigSchema>;
 
 export type ExtractResponse = z.infer<typeof extractResponseSchema>;
@@ -217,7 +217,7 @@ export type ExtractEvent =
 
 // ─── search ──────────────────────────────────────────────────────────────────
 
-export type SearchRequest = z.infer<typeof searchRequestSchema>;
+export type SearchRequest = z.input<typeof searchRequestSchema>;
 
 export type SearchResult = z.infer<typeof searchResultSchema>;
 export type SearchMetadata = z.infer<typeof searchMetadataSchema>;
@@ -313,7 +313,7 @@ export type MonitorEvent =
 
 // ─── crawl ───────────────────────────────────────────────────────────────────
 
-export type CrawlRequest = z.infer<typeof crawlRequestSchema>;
+export type CrawlRequest = z.input<typeof crawlRequestSchema>;
 export type CrawlStatus = z.infer<typeof crawlStatusSchema>;
 export type CrawlPageStatus = z.infer<typeof crawlPageStatusSchema>;
 

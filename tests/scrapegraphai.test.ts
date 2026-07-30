@@ -710,6 +710,25 @@ describe("search", () => {
 		expect(res.status).toBe("success");
 		expectRequest(0, "POST", "/search", searchParams);
 	});
+
+	test("with PDF options", async () => {
+		const body = {
+			results: [],
+			metadata: { search: {}, pages: { requested: 1, scraped: 0 } },
+		};
+		fetchSpy = spyOn(globalThis, "fetch").mockResolvedValueOnce(json(body));
+		const searchParams = {
+			query: "papers",
+			numResults: 1,
+			allowedTypes: ["application/pdf"] as const,
+			processors: [{ type: "pdf" as const, maxPages: 10 }],
+		};
+
+		const res = await sdk.search(API_KEY, searchParams);
+
+		expect(res.status).toBe("success");
+		expectRequest(0, "POST", "/search", searchParams);
+	});
 });
 
 describe("getCredits", () => {
@@ -862,7 +881,7 @@ describe("crawl", () => {
 		expectRequest(0, "POST", "/crawl", patternParams);
 	});
 
-	test("start with fetchConfig and contentTypes", async () => {
+	test("start with fetchConfig, allowedTypes, and processors", async () => {
 		const body = {
 			id: "crawl-abc",
 			status: "running",
@@ -874,7 +893,8 @@ describe("crawl", () => {
 
 		const configParams = {
 			url: "https://example.com",
-			contentTypes: ["text/html" as const, "application/pdf" as const],
+			allowedTypes: ["text/html" as const, "application/pdf" as const],
+			processors: [{ type: "pdf" as const, maxPages: 10 }],
 			fetchConfig: {
 				mode: "js" as const,
 				stealth: true,

@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, spyOn, test } from "bun:test";
+import pkg from "../package.json" with { type: "json" };
 import * as sdk from "../src/scrapegraphai.js";
+import { USER_AGENT, VERSION } from "../src/version.js";
 
 const API_KEY = "test-sgai-key";
 const BASE = process.env.SGAI_API_URL || "https://v2-api.scrapegraphai.com/api";
@@ -28,6 +30,7 @@ function expectRequest(
 	expect(url).toBe(`${base}${path}`);
 	expect(init.method).toBe(method);
 	expect((init.headers as Record<string, string>)["SGAI-APIKEY"]).toBe(API_KEY);
+	expect((init.headers as Record<string, string>)["User-Agent"]).toBe(USER_AGENT);
 	if (body) {
 		expect((init.headers as Record<string, string>)["Content-Type"]).toBe("application/json");
 		expect(JSON.parse(init.body as string)).toEqual(body);
@@ -1156,5 +1159,16 @@ describe("monitor", () => {
 		expect(res.status).toBe("success");
 		expect(res.data).toEqual(body);
 		expectRequest(0, "POST", "/monitor/mon-123/resume");
+	});
+});
+
+describe("user agent", () => {
+	test("identifies the SDK and its published version", () => {
+		expect(USER_AGENT).toBe(`scrapegraph-js/${VERSION}`);
+	});
+
+	// [NOTE] @Agent releases bump package.json by hand, so this is what keeps src/version.ts honest.
+	test("version matches package.json", () => {
+		expect(VERSION).toBe(pkg.version);
 	});
 });

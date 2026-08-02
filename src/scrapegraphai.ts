@@ -22,6 +22,7 @@ import type {
 	SearchRequest,
 	SearchResponse,
 } from "./types.js";
+import { USER_AGENT } from "./version.js";
 
 const BASE_URL = process.env.SGAI_API_URL || "https://v2-api.scrapegraphai.com/api";
 
@@ -84,6 +85,7 @@ async function request<T>(
 		method,
 		headers: {
 			"SGAI-APIKEY": apiKey,
+			"User-Agent": USER_AGENT,
 			...(body ? { "Content-Type": "application/json" } : {}),
 		},
 		body: body ? JSON.stringify(body) : undefined,

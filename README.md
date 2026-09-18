@@ -1,15 +1,15 @@
-# ScrapeGraphAI JS SDK
+# aster-go JS SDK
 
 [![npm version](https://badge.fury.io/js/scrapegraph-js.svg)](https://badge.fury.io/js/scrapegraph-js)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 <p align="center">
-  <a href="https://scrapegraphai.com">
-    <img src="media/banner.png" alt="ScrapeGraphAI JS SDK" style="width: 100%;">
+  <a href="https://aster-go.com">
+    <img src="media/banner.png" alt="aster-go JS SDK" style="width: 100%;">
   </a>
 </p>
 
-Official TypeScript SDK for the [ScrapeGraphAI AI API](https://scrapegraphai.com).
+Official TypeScript SDK for the [aster-go AI API](https://aster-go.com).
 
 ## Install
 
@@ -23,7 +23,7 @@ bun add scrapegraph-js
 
 ### API key
 
-Log in to the [ScrapeGraphAI dashboard](https://scrapegraphai.com/) to create an API key. The dashboard also shows your request history, usage, credits, and crawl/monitor activity.
+Log in to the [aster-go dashboard](https://aster-go.com/) to create an API key. The dashboard also shows your request history, usage, credits, and crawl/monitor activity.
 
 Set it in your environment:
 
@@ -32,10 +32,10 @@ export SGAI_API_KEY=...
 ```
 
 ```ts
-import { ScrapeGraphAI } from "scrapegraph-js";
+import { aster-go } from "scrapegraph-js";
 
-// reads SGAI_API_KEY from env, or pass explicitly: ScrapeGraphAI({ apiKey: "..." })
-const sgai = ScrapeGraphAI();
+// reads SGAI_API_KEY from env, or pass explicitly: aster-go({ apiKey: "..." })
+const sgai = aster-go();
 
 const result = await sgai.scrape({
   url: "https://example.com",
@@ -62,12 +62,12 @@ type ApiResult<T> = {
 
 ## 🆚 Open Source vs Managed API
 
-This SDK is a client for the **managed cloud API**. ScrapeGraphAI also ships an [open-source library](https://github.com/ScrapeGraphAI/Scrapegraph-ai) you can run yourself. This table explains the difference so you can pick the right one.
+This SDK is a client for the **managed cloud API**. aster-go also ships an [open-source library](https://github.com/aster-go/Scrapegraph-ai) you can run yourself. This table explains the difference so you can pick the right one.
 
-| | Open Source (`scrapegraphai`) | Managed API (this SDK) |
+| | Open Source (`aster-go`) | Managed API (this SDK) |
 |---|---|---|
 | **What it is** | A Python library you run yourself | A hosted cloud service you call via SDK |
-| **Where it runs** | Your own infrastructure (self-hosted) | ScrapeGraphAI cloud |
+| **Where it runs** | Your own infrastructure (self-hosted) | aster-go cloud |
 | **LLM** | Bring your own (OpenAI, Groq, Gemini, Azure, local via Ollama) | Managed for you |
 | **Browser / JS rendering** | You configure it (Playwright) | Managed (stealth, `auto`/`fast`/`js` modes) |
 | **Proxies & anti-bot** | Your responsibility | Included |
@@ -81,12 +81,6 @@ This SDK is a client for the **managed cloud API**. ScrapeGraphAI also ships an 
 **Choose the open-source library** if you want full control, on-prem/self-hosted data, local LLMs (Ollama), or fine-grained cost tuning — and you're happy to manage browsers, proxies and scaling yourself.
 
 **Choose the managed API** (this SDK) if you want zero infrastructure, managed JS rendering & anti-bot, built-in **Crawl** and scheduled **Monitor** jobs, and the fastest path to production — billed per credit.
-
-- Open-source library: https://github.com/ScrapeGraphAI/Scrapegraph-ai
-- Python SDK: https://github.com/ScrapeGraphAI/scrapegraph-py
-- JS/TS SDK: https://github.com/ScrapeGraphAI/scrapegraph-js
-- API docs: https://docs.scrapegraphai.com/introduction
-
 
 ## API
 
@@ -269,8 +263,8 @@ const health = await sgai.healthy();
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `SGAI_API_KEY` | Your ScrapeGraphAI API key | — |
-| `SGAI_API_URL` | Override API base URL | `https://v2-api.scrapegraphai.com/api` |
+| `SGAI_API_KEY` | Your aster-go API key | — |
+| `SGAI_API_URL` | Override API base URL | `https://v2-api.aster-go.com/api` |
 | `SGAI_DEBUG` | Enable debug logging (`"1"`) | off |
 | `SGAI_TIMEOUT` | Request timeout in seconds | `120` |
 
@@ -284,6 +278,3 @@ bun run build             # tsup → dist/
 bun run check             # tsc --noEmit + biome
 ```
 
-## License
-
-MIT - [ScrapeGraphAI AI](https://scrapegraphai.com)
